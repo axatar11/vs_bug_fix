@@ -1,0 +1,31 @@
+name: Renaming files
+on:
+  push:
+    branches:
+      - '*'
+jobs:
+      build:
+        runs-on: ubuntu-latest
+        steps:
+          - name: checkout repo content
+            uses: actions/checkout@v2 # checkout the repository content to github runner.
+            with:
+                persist-credentials: false
+                fetch-depth: 0
+          - name: setup python
+            uses: actions/setup-python@v2
+            with:
+              python-version: 3.8 #install the python needed
+          - name: Rename the SQL files # run the rename.py to get the latest data
+            run: python .github/scripts/rename.py
+          - name: Commit files
+            run: |
+             git config --local user.email "eniwoke.cornelius@atradius.com"
+             git config --local user.name "vaultspeed notebook renamer[bot]"
+             git add -A
+             git diff --cached --exit-code || git commit -m "chore: rename sql files and turn SQL notebooks to databricks notebooks"
+          - name: Push changes
+            uses: ad-m/github-push-action@master
+            with:
+              github_token: ${{ secrets.RENAME_SCRIPTS_TOKEN }}
+              branch: ${{ github.ref }}
