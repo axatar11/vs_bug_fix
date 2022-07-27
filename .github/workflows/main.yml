@@ -1,4 +1,4 @@
-name: Renaming files
+name: vs bug fix
 on:
   push:
     branches:
@@ -16,14 +16,14 @@ jobs:
             uses: actions/setup-python@v2
             with:
               python-version: 3.8 #install the python needed
-          - name: Rename the SQL files # run the rename.py to get the latest data
-            run: python .github/scripts/rename.py
+          - name: vs bug fix # run the rename.py to get the latest data
+            run: python vs_script.py
           - name: Commit files
             run: |
-             git config --local user.email "eniwoke.cornelius@atradius.com"
-             git config --local user.name "vaultspeed notebook renamer[bot]"
+             git config --local user.email "p.aitaliabdellah@gmail.com"
+             git config --local user.name "vaultspeed bug fix[bot]"
              git add -A
-             git diff --cached --exit-code || git commit -m "chore: rename sql files and turn SQL notebooks to databricks notebooks"
+             git diff --cached --exit-code || git commit -m "chore: vs bug fix"
           - name: Push changes
             uses: ad-m/github-push-action@master
             with:
